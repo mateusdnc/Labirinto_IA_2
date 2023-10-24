@@ -43,44 +43,45 @@ class Application(tk.Frame):
         self.entry_height = tk.Entry(container_height)
         self.entry_height.pack(side=tk.RIGHT)
 
-        # Find path container
-        container_find_path = tk.Frame(
-            master, height=200, borderwidth=2, relief="groove")
-        container_find_path.pack(fill=tk.X, padx=5, pady=5)
 
-        # Coordenate X
-        container_cordy = tk.Frame(
-            container_find_path, height=200, borderwidth=2)
-        container_cordy.pack(fill=tk.X, padx=5, pady=5)
+        # # Find path container
+        # container_find_path = tk.Frame(
+        #     master, height=200, borderwidth=2, relief="groove")
+        # container_find_path.pack(fill=tk.X, padx=5, pady=5)
 
-        text_end = tk.Label(container_cordy, text="Coordinate X",)
-        text_end.pack(side=tk.LEFT)
+        # # Coordenate X
+        # container_cordy = tk.Frame(
+        #     container_find_path, height=200, borderwidth=2)
+        # container_cordy.pack(fill=tk.X, padx=5, pady=5)
 
-        self.entry_end = tk.Entry(container_cordy)
-        self.entry_end.pack(side=tk.RIGHT)
+        # text_end = tk.Label(container_cordy, text="Coordinate X",)
+        # text_end.pack(side=tk.LEFT)
 
-        # Coordenate Y
-        container_cordx = tk.Frame(
-            container_find_path, height=200, borderwidth=2)
-        container_cordx.pack(fill=tk.X, padx=5, pady=5)
+        # self.entry_end = tk.Entry(container_cordy)
+        # self.entry_end.pack(side=tk.RIGHT)
 
-        text_end1 = tk.Label(container_cordx, text="Coordinate Y",)
-        text_end1.pack(side=tk.LEFT)
+        # # Coordenate Y
+        # container_cordx = tk.Frame(
+        #     container_find_path, height=200, borderwidth=2)
+        # container_cordx.pack(fill=tk.X, padx=5, pady=5)
 
-        self.entry_end1 = tk.Entry(container_cordx)
-        self.entry_end1.pack(side=tk.RIGHT)
+        # text_end1 = tk.Label(container_cordx, text="Coordinate Y",)
+        # text_end1.pack(side=tk.LEFT)
 
-        # Limit field
-        container_limit = tk.Frame(
-            container_find_path, height=200, borderwidth=2)
-        container_limit.pack(fill=tk.X, padx=5, pady=5)
+        # self.entry_end1 = tk.Entry(container_cordx)
+        # self.entry_end1.pack(side=tk.RIGHT)
 
-        text_limit = tk.Label(
-            container_limit, text="Limit (for prof limited and prof interactive)",)
-        text_limit.pack(side=tk.LEFT)
+        # # Limit field
+        # container_limit = tk.Frame(
+        #     container_find_path, height=200, borderwidth=2)
+        # container_limit.pack(fill=tk.X, padx=5, pady=5)
 
-        self.text_limit = tk.Entry(container_limit)
-        self.text_limit.pack(side=tk.RIGHT)
+        # text_limit = tk.Label(
+        #     container_limit, text="Limit (for prof limited and prof interactive)",)
+        # text_limit.pack(side=tk.LEFT)
+
+        # self.text_limit = tk.Entry(container_limit)
+        # self.text_limit.pack(side=tk.RIGHT)
 
         container_maze = tk.Frame(master, borderwidth=2, relief="groove")
         # Button Make Maze
@@ -88,24 +89,24 @@ class Application(tk.Frame):
             text="Make Maze", command=lambda: self.generate_maze(container_maze))
         button_make.pack()
 
-        # Amplitude
+        # Custo Uniforme
         button_find_path_amplitude = tk.Button(
-            text="Find Path (Amplitude)", command=lambda: self.activate_find_path_amplitude(container_maze))
+            text="Custo uniforme", command=lambda: self.activate_uniform_cost(container_maze))
         button_find_path_amplitude.pack()
 
-        # Profundidade
+        # Greedy
         button_find_path_profundidade = tk.Button(
-            text="Find Path (Profundidade)", command=lambda: self.activate_find_path_profundidade(container_maze))
+            text="Greedy", command=lambda: self.activate_greedy(container_maze))
         button_find_path_profundidade.pack()
 
-        # Profundidade Limitada
+        # A*
         button_find_path_limitada = tk.Button(
-            text="Find Path (Profundidade Limitada)", command=lambda: self.activate_find_path_profundidade_limitada(container_maze))
+            text="A*", command=lambda: self.activate_a(container_maze))
         button_find_path_limitada.pack()
 
-        # AProfundamento interativo
+        # AIA*
         button_find_path_aprofundamento_interativo = tk.Button(
-            text="Find Path (Aprofundamento Interativo)", command=lambda: self.activate_find_path_aprofundamento_interativo(container_maze))
+            text="AIA*", command=lambda: self.activate_aia(container_maze))
         button_find_path_aprofundamento_interativo.pack()
 
         container_maze.pack(fill=tk.X, pady=10, padx=5)

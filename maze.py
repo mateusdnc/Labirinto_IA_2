@@ -1,9 +1,15 @@
 class No(object):
-    def __init__(self, pai=None, coordenada=None, nivel=None, anterior=None,
-                 proximo=None):
+    def __init__(self, pai=None, estado=None, valor1=None,
+                 valor2=None, anterior=None, proximo=None):
+        # controle da árvore de busca
         self.pai = pai
-        self.coordenada = coordenada
-        self.nivel = nivel
+        # indica o nó do grafo
+        self.estado = estado
+        # função de avaliação f(n) do método
+        self.valor1 = valor1
+        # custo do caminho da origem até o nó atual
+        self.valor2 = valor2
+        # controle da lista encadeada
         self.anterior = anterior
         self.proximo = proximo
 
@@ -13,20 +19,19 @@ class lista(object):
     tail = None
 
     # INSERE NO INÍCIO DA LISTA
-    def inserePrimeiro(self, v1, v2, p):
-        novo_no = No(p, v1, v2, None, None)
+    def inserePrimeiro(self, s, v1, v2, p):
+        novo_no = No(p, s, v1, v2, None, None)
         if self.head == None:
             self.tail = novo_no
-            self.head = novo_no
         else:
             novo_no.proximo = self.head
             self.head.anterior = novo_no
-            self.head = novo_no
+        self.head = novo_no
 
     # INSERE NO FIM DA LISTA
-    def insereUltimo(self, v1, v2, p):
+    def insereUltimo(self, s, v1, v2, p):
 
-        novo_no = No(p, v1, v2, None, None)
+        novo_no = No(p, s, v1, v2, None, None)
 
         if self.head is None:
             self.head = novo_no
@@ -35,17 +40,44 @@ class lista(object):
             novo_no.anterior = self.tail
         self.tail = novo_no
 
+    # INSERE NO FIM DA LISTA
+    def inserePos_X(self, s, v1, v2, p):
+
+        # se lista estiver vazia
+        if self.head is None:
+            self.inserePrimeiro(s, v1, v2, p)
+        else:
+            atual = self.head
+            while atual.valor1 < v1:
+                atual = atual.proximo
+                if atual is None:
+                    break
+
+            if atual == self.head:
+                self.inserePrimeiro(s, v1, v2, p)
+            else:
+                if atual is None:
+                    self.insereUltimo(s, v1, v2, p)
+                else:
+                    novo_no = No(p, s, v1, v2, None, None)
+                    aux = atual.anterior
+                    aux.proximo = novo_no
+                    novo_no.anterior = aux
+                    atual.anterior = novo_no
+                    novo_no.proximo = atual
+
     # REMOVE NO INÍCIO DA LISTA
+
     def deletaPrimeiro(self):
         if self.head is None:
             return None
         else:
             no = self.head
             self.head = self.head.proximo
-            if self.head is None:
-                self.tail = None
-            else:
+            if self.head is not None:
                 self.head.anterior = None
+            else:
+                self.tail = None
             return no
 
     # REMOVE NO FIM DA LISTA
@@ -55,11 +87,10 @@ class lista(object):
         else:
             no = self.tail
             self.tail = self.tail.anterior
-            if self.tail is None:
-                self.head = None
-            else:
+            if self.tail is not None:
                 self.tail.proximo = None
-
+            else:
+                self.head = None
             return no
 
     def vazio(self):
@@ -73,37 +104,50 @@ class lista(object):
         aux = self.head
         str = []
         while aux != None:
-            temp = []
-            temp.append(aux.coordenada)
-            temp.append(aux.nivel)
-            str.append(temp)
+            linha = []
+            linha.append(aux.estado)
+            linha.append(aux.valor1)
+            str.append(linha)
             aux = aux.proximo
 
         return str
 
-    def exibeCaminho(self):
+    def exibeArvore(self):
 
         atual = self.tail
         caminho = []
         while atual.pai is not None:
-            caminho.append(atual.coordenada)
+            caminho.append(atual.estado)
             atual = atual.pai
-        caminho.append(atual.coordenada)
-        caminho = caminho[::-1]
+        caminho.append(atual.estado)
         return caminho
 
-    def exibeCaminho1(self, valor):
+    def exibeArvore1(self, s):
 
         atual = self.head
-        while atual.coordenada != valor:
+        while atual.estado != s:
             atual = atual.proximo
 
         caminho = []
         atual = atual.pai
         while atual.pai is not None:
-            caminho.append(atual.coordenada)
+            caminho.append(atual.estado)
             atual = atual.pai
-        caminho.append(atual.coordenada)
+        caminho.append(atual.estado)
+        return caminho
+
+    def exibeArvore2(self, s, v1):
+
+        atual = self.tail
+
+        while atual.estado != s or atual.valor1 != v1:
+            atual = atual.anterior
+
+        caminho = []
+        while atual.pai is not None:
+            caminho.append(atual.estado)
+            atual = atual.pai
+        caminho.append(atual.estado)
         return caminho
 
     def primeiro(self):
@@ -113,288 +157,230 @@ class lista(object):
         return self.tail
 
 
-def sucessor(x, y, mapa):
-    filhos = []
-    if mapa[x-1][y] != 1:
-        aux = []
-        aux.append(x-1)
-        aux.append(y)
-        filhos.append(aux)
-    if mapa[x+1][y] != 1:
-        aux = []
-        aux.append(x+1)
-        aux.append(y)
-        filhos.append(aux)
-    if mapa[x][y-1] != 1:
-        aux = []
-        aux.append(x)
-        aux.append(y-1)
-        filhos.append(aux)
-    if mapa[x][y+1] != 1:
-        aux = []
-        aux.append(x)
-        aux.append(y+1)
-        filhos.append(aux)
-    return filhos
+class busca(object):
 
+    def custo_uniforme(self, inicio, fim):
 
-def amplitude(mapa, inicio, fim):
-    mapaNovo=mapa
-    # caminho = [[1,1],[1,2]]
-
-    caminho = []
-    # manipular a FILA para a busca
-    l1 = lista()
-
-    # cópia para apresentar o caminho (somente inserção)
-    l2 = lista()
-
-    # insere ponto inicial como nó raiz da árvore
-    l1.insereUltimo(inicio, 0, None)
-    l2.insereUltimo(inicio, 0, None)
-
-    # controle de nós visitados
-    visitado = []
-    linha = []
-    linha.append(inicio)
-    linha.append(0)
-    visitado.append(linha)
-
-    while not l1.vazio():
-        # remove o primeiro da fila
-        atual = l1.deletaPrimeiro()
-        x = atual.coordenada[0]
-        y = atual.coordenada[1]
-
-        filhos = []
-        filhos = sucessor(x, y, mapaNovo)
-
-        # varre todos as conexões dentro do grafo a partir de atual
-        for novo in filhos:
-            flag = True  # pressuponho que não foi visitado
-
-            # para cada conexão verifica se já foi visitado
-            for j in range(len(visitado)):
-                if visitado[j][0] == novo:
-                    if visitado[j][1] <= (atual.nivel+1):
-                        flag = False
-                    else:
-                        visitado[j][1] = atual.nivel+1
-                    break
-
-            # se não foi visitado inclui na fila
-            if flag:
-                l1.insereUltimo(novo, atual.nivel + 1, atual)
-                l2.insereUltimo(novo, atual.nivel + 1, atual)
-
-                # marca como visitado
-                linha = []
-                linha.append(novo)
-                linha.append(atual.nivel+1)
-                visitado.append(linha)
-
-                # verifica se é o objetivo
-                if novo == fim:
-
-                    caminho += l2.exibeCaminho()
-                    for t in caminho:
-                        mapaNovo[t[0]][t[1]] = 2
-                    return mapaNovo
-    return mapaNovo
-
-
-def profundidade(mapa, inicio, fim):
-
-    caminho = []
-    # manipular a FILA para a busca
-    l1 = lista()
-
-    # cópia para apresentar o caminho (somente inserção)
-    l2 = lista()
-
-    # insere ponto inicial como nó raiz da árvore
-    l1.insereUltimo(inicio, 0, None)
-    l2.insereUltimo(inicio, 0, None)
-
-    # controle de nós visitados
-    visitado = []
-    linha = []
-    linha.append(inicio)
-    linha.append(0)
-    visitado.append(linha)
-
-    while not l1.vazio():
-        # remove o primeiro da fila
-        atual = l1.deletaUltimo()
-        x = atual.coordenada[0]
-        y = atual.coordenada[1]
-
-        filhos = []
-        filhos = sucessor(x, y, mapa)
-
-        # varre todos as conexões dentro do grafo a partir de atual
-        for novo in filhos:
-
-            flag = True  # pressuponho que não foi visitado
-
-            # para cada conexão verifica se já foi visitado
-            for j in range(len(visitado)):
-                if visitado[j][0] == novo:
-                    if visitado[j][1] <= (atual.nivel+1):
-                        flag = False
-                    else:
-                        visitado[j][1] = atual.nivel+1
-                    break
-
-            # se não foi visitado inclui na fila
-            if flag:
-                l1.insereUltimo(novo, atual.nivel + 1, atual)
-                l2.insereUltimo(novo, atual.nivel + 1, atual)
-
-                # marca como visitado
-                linha = []
-                linha.append(novo)
-                linha.append(atual.nivel+1)
-                visitado.append(linha)
-
-                # verifica se é o objetivo
-                if novo == fim:
-                    caminho += l2.exibeCaminho()
-                    # print("Árvore de busca:\n",l2.exibeLista())
-                    for t in caminho:
-                        mapa[t[0]][t[1]] = 2
-                    return mapa
-    return mapa
-
-
-def prof_limitada(mapa, inicio, fim, limite):
-
-    caminho = []
-    # manipular a FILA para a busca
-    l1 = lista()
-
-    # cópia para apresentar o caminho (somente inserção)
-    l2 = lista()
-
-    # insere ponto inicial como nó raiz da árvore
-    l1.insereUltimo(inicio, 0, None)
-    l2.insereUltimo(inicio, 0, None)
-
-    # controle de nós visitados
-    visitado = []
-    linha = []
-    linha.append(inicio)
-    linha.append(0)
-    visitado.append(linha)
-
-    while not l1.vazio():
-        # remove o primeiro da fila
-        atual = l1.deletaUltimo()
-        x = atual.coordenada[0]
-        y = atual.coordenada[1]
-
-        if atual.nivel < limite:
-
-            filhos = []
-            filhos = sucessor(x, y, mapa)
-
-            # varre todos as conexões dentro do grafo a partir de atual
-            for novo in filhos:
-
-                flag = True  # pressuponho que não foi visitado
-
-                # para cada conexão verifica se já foi visitado
-                for j in range(len(visitado)):
-                    if visitado[j][0] == novo:
-                        if visitado[j][1] <= (atual.nivel+1):
-                            flag = False
-                        else:
-                            visitado[j][1] = atual.nivel+1
-                        break
-
-                # se não foi visitado inclui na fila
-                if flag:
-                    l1.insereUltimo(novo, atual.nivel + 1, atual)
-                    l2.insereUltimo(novo, atual.nivel + 1, atual)
-
-                    # marca como visitado
-                    linha = []
-                    linha.append(novo)
-                    linha.append(atual.nivel+1)
-                    visitado.append(linha)
-
-                    # verifica se é o objetivo
-                    if novo == fim:
-                        caminho += l2.exibeCaminho()
-                        for t in caminho:
-                            mapa[t[0]][t[1]] = 2
-                    return mapa
-    return mapa
-
-
-def aprof_iterativo(mapa, inicio, fim, lim_max):
-
-    for limite in range(1, lim_max):
-
-        caminho = []
-        # manipular a FILA para a busca
         l1 = lista()
-
-        # cópia para apresentar o caminho (somente inserção)
         l2 = lista()
-
-        # insere ponto inicial como nó raiz da árvore
-        l1.insereUltimo(inicio, 0, None)
-        l2.insereUltimo(inicio, 0, None)
-
-        # controle de nós visitados
         visitado = []
+
+        l1.insereUltimo(inicio, 0, 0, None)
+        l2.insereUltimo(inicio, 0, 0, None)
         linha = []
         linha.append(inicio)
         linha.append(0)
         visitado.append(linha)
 
-        while not l1.vazio():
-            # remove o primeiro da fila
-            atual = l1.deletaUltimo()
-            x = atual.coordenada[0]
-            y = atual.coordenada[1]
+        while l1.vazio() == False:
+            atual = l1.deletaPrimeiro()
 
-            if atual.nivel < limite:
+            if atual.estado == fim:
+                caminho = []
+                caminho = l2.exibeArvore2(atual.estado, atual.valor1)
+                print("Cópia da árvore:\n", l2.exibeLista())
+                print("\nÁrvore de busca:\n", l1.exibeLista(), "\n")
+                return caminho, atual.valor2
 
-                filhos = []
-                filhos = sucessor(x, y, mapa)
+            ind = nos.index(atual.estado)
+            for novo in grafo[ind]:
 
-                # varre todos as conexões dentro do grafo a partir de atual
-                for novo in filhos:
+                # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
+                v2 = atual.valor2 + novo[1]  # custo do caminho
+                v1 = v2  # f1(n)
 
-                    flag = True  # pressuponho que não foi visitado
+                flag1 = True
+                flag2 = True
+                for j in range(len(visitado)):
+                    if visitado[j][0] == novo[0]:
+                        if visitado[j][1] <= v2:
+                            flag1 = False
+                        else:
+                            visitado[j][1] = v2
+                            flag2 = False
+                        break
 
-                    # para cada conexão verifica se já foi visitado
-                    for j in range(len(visitado)):
-                        if visitado[j][0] == novo:
-                            if visitado[j][1] <= (atual.nivel+1):
-                                flag = False
-                            else:
-                                visitado[j][1] = atual.nivel+1
-                            break
-
-                    # se não foi visitado inclui na fila
-                    if flag:
-                        l1.insereUltimo(novo, atual.nivel + 1, atual)
-                        l2.insereUltimo(novo, atual.nivel + 1, atual)
-
-                        # marca como visitado
+                if flag1:
+                    l1.inserePos_X(novo[0], v1, v2, atual)
+                    l2.inserePos_X(novo[0], v1, v2, atual)
+                    if flag2:
                         linha = []
-                        linha.append(novo)
-                        linha.append(atual.nivel+1)
+                        linha.append(novo[0])
+                        linha.append(v2)
                         visitado.append(linha)
 
-                        # verifica se é o objetivo
-                        if novo == fim:
-                            caminho += l2.exibeCaminho()
-                            # print("Árvore de busca:\n",l2.exibeLista())
-                            for t in caminho:
-                                mapa[t[0]][t[1]] = 2
-                    return mapa
-    return mapa
+        return "Caminho não encontrado"
+
+    def greedy(self, inicio, fim):
+
+        ind_f = nos.index(fim)
+        l1 = lista()
+        l2 = lista()
+        visitado = []
+
+        l1.insereUltimo(inicio, 0, 0, None)
+        l2.insereUltimo(inicio, 0, 0, None)
+        linha = []
+        linha.append(inicio)
+        linha.append(0)
+        visitado.append(linha)
+
+        while l1.vazio() == False:
+            atual = l1.deletaPrimeiro()
+
+            if atual.estado == fim:
+                caminho = []
+                caminho = l2.exibeArvore2(atual.estado, atual.valor1)
+                # print("Cópia da árvore:\n",l2.exibeLista())
+                # print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
+
+                return caminho, atual.valor2
+
+            ind = nos.index(atual.estado)
+            for novo in grafo[ind]:
+
+                ind1 = nos.index(novo[0])
+
+                # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
+                v2 = atual.valor2 + novo[1]  # custo do caminho
+                v1 = h[ind_f][ind1]  # f2(n)
+
+                flag1 = True
+                flag2 = True
+                for j in range(len(visitado)):
+                    if visitado[j][0] == novo[0]:
+                        if visitado[j][1] <= v2:
+                            flag1 = False
+                        else:
+                            visitado[j][1] = v2
+                            flag2 = False
+                        break
+
+                if flag1:
+                    l1.inserePos_X(novo[0], v1, v2, atual)
+                    l2.inserePos_X(novo[0], v1, v2, atual)
+                    if flag2:
+                        linha = []
+                        linha.append(novo[0])
+                        linha.append(v2)
+                        visitado.append(linha)
+
+        return "Caminho não encontrado"
+
+    def a_estrela(self, inicio, fim):
+
+        ind_f = nos.index(fim)
+        l1 = lista()
+        l2 = lista()
+        visitado = []
+
+        l1.insereUltimo(inicio, 0, 0, None)
+        l2.insereUltimo(inicio, 0, 0, None)
+        linha = []
+        linha.append(inicio)
+        linha.append(0)
+        visitado.append(linha)
+
+        while l1.vazio() == False:
+            atual = l1.deletaPrimeiro()
+
+            if atual.estado == fim:
+                caminho = []
+                caminho = l2.exibeArvore2(atual.estado, atual.valor1)
+                # print("Cópia da árvore:\n",l2.exibeLista())
+                # print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
+                return caminho, atual.valor2
+
+            ind = nos.index(atual.estado)
+            for novo in grafo[ind]:
+
+                ind1 = nos.index(novo[0])
+
+                # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
+                v2 = atual.valor2 + novo[1]  # custo do caminho
+                v1 = v2 + h[ind_f][ind1]  # f2(n)
+
+                flag1 = True
+                flag2 = True
+                for j in range(len(visitado)):
+                    if visitado[j][0] == novo[0]:
+                        if visitado[j][1] <= v2:
+                            flag1 = False
+                        else:
+                            visitado[j][1] = v2
+                            flag2 = False
+                        break
+
+                if flag1:
+                    l1.inserePos_X(novo[0], v1, v2, atual)
+                    l2.inserePos_X(novo[0], v1, v2, atual)
+                    if flag2:
+                        linha = []
+                        linha.append(novo[0])
+                        linha.append(v2)
+                        visitado.append(linha)
+
+        return "Caminho não encontrado"
+
+    def aia_estrela(self, inicio, fim, limite):
+
+        ind_f = nos.index(fim)
+        while True:
+            lim_exc = []
+            l1 = lista()
+            l2 = lista()
+            visitado = []
+
+            l1.insereUltimo(inicio, 0, 0, None)
+            l2.insereUltimo(inicio, 0, 0, None)
+            linha = []
+            linha.append(inicio)
+            linha.append(0)
+            visitado.append(linha)
+
+            # print("Limite: ",limite)
+            while l1.vazio() == False:
+                atual = l1.deletaPrimeiro()
+
+                if atual.estado == fim:
+                    caminho = []
+                    caminho = l2.exibeArvore2(atual.estado, atual.valor1)
+                    # print("Cópia da árvore:\n",l2.exibeLista())
+                    # print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
+
+                    return caminho, atual.valor2
+
+                ind = nos.index(atual.estado)
+                for novo in grafo[ind]:
+
+                    ind1 = nos.index(novo[0])
+
+                    # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
+                    v2 = atual.valor2 + novo[1]  # custo do caminho
+                    v1 = v2 + h[ind_f][ind1]  # f2(n)
+
+                    if v1 <= limite:
+                        flag1 = True
+                        flag2 = True
+                        for j in range(len(visitado)):
+                            if visitado[j][0] == novo[0]:
+                                if visitado[j][1] <= v2:
+                                    flag1 = False
+                                else:
+                                    visitado[j][1] = v2
+                                    flag2 = False
+                                break
+
+                        if flag1:
+                            l1.inserePos_X(novo[0], v1, v2, atual)
+                            l2.inserePos_X(novo[0], v1, v2, atual)
+                            if flag2:
+                                linha = []
+                                linha.append(novo[0])
+                                linha.append(v2)
+                                visitado.append(linha)
+                    else:
+                        lim_exc.append(v1)
+            limite = sum(lim_exc)/len(lim_exc)
+
+        return "Caminho não encontrado"
