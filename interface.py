@@ -126,11 +126,13 @@ class Application(tk.Frame):
 
     def activate_uniform_cost(self, container):
         self.reset_maze_container(self.MATRIZ,container)
-        Grid.paint_path(maze.busca.custo_uniforme(self.MATRIZ,inicio=1, fim=5),container,self.MATRIZ)
+        Grid.paint_path(maze.busca.custo_uniforme(self.MATRIZ,inicio=1, fim=Grid.encontrar_id(int(
+            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ)),container,self.MATRIZ)
 
     def activate_greedy(self, container):
         self.reset_maze_container(self.MATRIZ,container)
-        Grid.paint_path(maze.busca.greedy(self.MATRIZ,inicio=1, fim=5),container,self.MATRIZ)
+        Grid.paint_path(maze.busca.greedy(self.MATRIZ,inicio=1, fim=Grid.encontrar_id(int(
+            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ)),container,self.MATRIZ)
 
     # def activate_a(self, container):
     #     self.reset_maze_container(self.MATRIZ,container)
