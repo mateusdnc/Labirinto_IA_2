@@ -33,18 +33,18 @@ def paint_outline(matriz, container):
         # Define o cabecalho com as cordenadas
         entry.change_entry_text(container, h+1, 0, h)
         # Pinta toda a primeira linha de preto
-        entry.change_entry_color(container, h+1, 1, "black")
+       # entry.change_entry_color(container, h+1, 1, "black")
         # Pinta toda a ultima linha de preto
-        entry.change_entry_color(container, h+1, len(matriz)-1, "black")
+        #entry.change_entry_color(container, h+1, len(matriz)-1, "black")
 
     #Preenche horizontalmente
     for w in range(len(matriz[0])):
         # Define o cabecalho com as cordenadas
         entry.change_entry_text(container, 0, w+1, w)
         # Pinta toda a primeira linha de preto
-        entry.change_entry_color(container, 1, w+1, "black")
+        #entry.change_entry_color(container, 1, w+1, "black")
         # Pinta toda a ultima linha de preto
-        entry.change_entry_color(container, len(matriz)-1, w+1, "black")
+       # entry.change_entry_color(container, len(matriz)-1, w+1, "black")
 
 def paint_maze(matriz, container):
     rowCount=0
@@ -58,13 +58,10 @@ def paint_maze(matriz, container):
         rowCount=rowCount+1
 
 def paint_path(visitadoArray,container,matriz):
-    def encontrar_posicao(id):
-        x = (id - 1) % len(matriz) 
-        y = (id - 1) // len(matriz) 
-        return x, y
+
 
     for cell in visitadoArray:
-        x, y = encontrar_posicao(cell)
+        x, y = encontrar_posicao(cell,matriz)
         entry.change_entry_color(container, x+1, y+1, "yellow")
 
     # for row in matriz:
@@ -74,5 +71,15 @@ def paint_path(visitadoArray,container,matriz):
     #             entry.change_entry_color(container, rowCount+1, colCount+1, "blue")
     #         colCount=colCount+1
     #     rowCount=rowCount+1
+
+def encontrar_id(y,x,matriz):
+    # Subtrai 1 de X e Y para ajustar para índices baseados em 0
+    id = x + (y - 1) *(len(matriz)/2)-2
+    return int(id)
+
+def encontrar_posicao(id,matriz):
+    x = (id - 1) % len(matriz) 
+    y = (id - 1) // len(matriz) 
+    return x, y
 
 
