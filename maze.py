@@ -1,3 +1,6 @@
+import numpy as np
+import random as rd
+
 class No(object):
     def __init__(self, pai=None, estado=None, valor1=None,
                  valor2=None, anterior=None, proximo=None):
@@ -155,15 +158,55 @@ class lista(object):
 
     def ultimo(self):
         return self.tail
+    
 
+
+def convertAndSetMatrixToGraph(matriz):
+    nosLocal = []  # Lista de nós
+    grafoLocal = []  # Lista de conexões entre os nós
+
+    # Defina a função para adicionar conexões entre nós
+    def adicionar_conexao(origem, destino, peso):
+        grafoLocal[origem].append([destino, peso])
+
+    # Inicialize a lista de nós e o grafo
+    for i in range(len(matriz) * len(matriz[0])):
+        nosLocal.append(i + 1)  # Nós representados como números crescentes
+        grafoLocal.append([])  # Inicialize uma lista vazia para as conexões
+
+    def gera_H(n):
+        aux = busca()
+        h = np.zeros((n,n),int)
+        i = 0
+        for no_origem in nosLocal:
+            j = 0
+            for no_destino in nosLocal:
+                if no_origem != no_destino:
+                    cam, v  = aux.custo_uniforme(matriz,no_origem, no_destino)
+                    h[i][j] = v*rd.uniform(0,1)
+                j += 1
+            i += 1
+        return h
+
+    # Percorra a matriz e adicione as conexões entre nós
+    for i in range(len(matriz)):
+        for j in range(len(matriz[i])):
+            no_atual = i * len(matriz[i]) + j
+            if i < len(matriz) - 1:
+                adicionar_conexao(no_atual, no_atual + len(matriz[i]), matriz[i + 1][j])
+            if j < len(matriz[i]) - 1:
+                adicionar_conexao(no_atual, no_atual + 1, matriz[i][j + 1])
+    return grafoLocal,nosLocal
 
 class busca(object):
 
-    def custo_uniforme(self, inicio, fim):
 
+    def custo_uniforme(matriz,inicio, fim):
+        grafo,nos =convertAndSetMatrixToGraph(matriz)
         l1 = lista()
         l2 = lista()
         visitado = []
+        visitadoArray = []
 
         l1.insereUltimo(inicio, 0, 0, None)
         l2.insereUltimo(inicio, 0, 0, None)
@@ -208,10 +251,13 @@ class busca(object):
                         linha.append(novo[0])
                         linha.append(v2)
                         visitado.append(linha)
+        for sublista in visitado:
+            visitadoArray.extend(sublista)  # Adiciona os elementos da sublista à lista final
+        return visitadoArray
 
-        return "Caminho não encontrado"
 
-    def greedy(self, inicio, fim):
+    def greedy(matriz,inicio, fim):
+        grafo,nos,h =convertAndSetMatrixToGraph(matriz)
 
         ind_f = nos.index(fim)
         l1 = lista()
@@ -267,7 +313,10 @@ class busca(object):
 
         return "Caminho não encontrado"
 
-    def a_estrela(self, inicio, fim):
+
+    def a_estrela(matriz,inicio, fim):
+        grafo,nos,h =convertAndSetMatrixToGraph(matriz)
+    
 
         ind_f = nos.index(fim)
         l1 = lista()
@@ -322,7 +371,10 @@ class busca(object):
 
         return "Caminho não encontrado"
 
-    def aia_estrela(self, inicio, fim, limite):
+
+    def aia_estrela(matriz,inicio, fim, limite):
+        grafo,nos,h =convertAndSetMatrixToGraph(matriz)
+
 
         ind_f = nos.index(fim)
         while True:
@@ -384,3 +436,4 @@ class busca(object):
             limite = sum(lim_exc)/len(lim_exc)
 
         return "Caminho não encontrado"
+

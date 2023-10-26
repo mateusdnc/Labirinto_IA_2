@@ -4,7 +4,7 @@ import maze
 
 # Variaveis do tamanho da janela do Tkinter
 window_height = 600
-window_width = 450
+window_width = 600
 
 root = tk.Tk()
 
@@ -44,32 +44,32 @@ class Application(tk.Frame):
         self.entry_height.pack(side=tk.RIGHT)
 
 
-        # # Find path container
-        # container_find_path = tk.Frame(
-        #     master, height=200, borderwidth=2, relief="groove")
-        # container_find_path.pack(fill=tk.X, padx=5, pady=5)
+        # Find path container
+        container_find_path = tk.Frame(
+            master, height=200, borderwidth=2, relief="groove")
+        container_find_path.pack(fill=tk.X, padx=5, pady=5)
 
-        # # Coordenate X
-        # container_cordy = tk.Frame(
-        #     container_find_path, height=200, borderwidth=2)
-        # container_cordy.pack(fill=tk.X, padx=5, pady=5)
+        # Coordenate X
+        container_cordy = tk.Frame(
+            container_find_path, height=200, borderwidth=2)
+        container_cordy.pack(fill=tk.X, padx=5, pady=5)
 
-        # text_end = tk.Label(container_cordy, text="Coordinate X",)
-        # text_end.pack(side=tk.LEFT)
+        text_end = tk.Label(container_cordy, text="Coordinate X",)
+        text_end.pack(side=tk.LEFT)
 
-        # self.entry_end = tk.Entry(container_cordy)
-        # self.entry_end.pack(side=tk.RIGHT)
+        self.entry_end = tk.Entry(container_cordy)
+        self.entry_end.pack(side=tk.RIGHT)
 
-        # # Coordenate Y
-        # container_cordx = tk.Frame(
-        #     container_find_path, height=200, borderwidth=2)
-        # container_cordx.pack(fill=tk.X, padx=5, pady=5)
+        # Coordenate Y
+        container_cordx = tk.Frame(
+            container_find_path, height=200, borderwidth=2)
+        container_cordx.pack(fill=tk.X, padx=5, pady=5)
 
-        # text_end1 = tk.Label(container_cordx, text="Coordinate Y",)
-        # text_end1.pack(side=tk.LEFT)
+        text_end1 = tk.Label(container_cordx, text="Coordinate Y",)
+        text_end1.pack(side=tk.LEFT)
 
-        # self.entry_end1 = tk.Entry(container_cordx)
-        # self.entry_end1.pack(side=tk.RIGHT)
+        self.entry_end1 = tk.Entry(container_cordx)
+        self.entry_end1.pack(side=tk.RIGHT)
 
         # # Limit field
         # container_limit = tk.Frame(
@@ -99,15 +99,15 @@ class Application(tk.Frame):
             text="Greedy", command=lambda: self.activate_greedy(container_maze))
         button_find_path_profundidade.pack()
 
-        # A*
-        button_find_path_limitada = tk.Button(
-            text="A*", command=lambda: self.activate_a(container_maze))
-        button_find_path_limitada.pack()
+        # # A*
+        # button_find_path_limitada = tk.Button(
+        #     text="A*", command=lambda: self.activate_a(container_maze))
+        # button_find_path_limitada.pack()
 
-        # AIA*
-        button_find_path_aprofundamento_interativo = tk.Button(
-            text="AIA*", command=lambda: self.activate_aia(container_maze))
-        button_find_path_aprofundamento_interativo.pack()
+        # # AIA*
+        # button_find_path_aprofundamento_interativo = tk.Button(
+        #     text="AIA*", command=lambda: self.activate_aia(container_maze))
+        # button_find_path_aprofundamento_interativo.pack()
 
         container_maze.pack(fill=tk.X, pady=10, padx=5)
 
@@ -124,32 +124,27 @@ class Application(tk.Frame):
         Grid.paint_maze(matriz, container)
         Grid.paint_outline(matriz, container)
 
-    def activate_find_path_amplitude(self, container):
+    def activate_uniform_cost(self, container):
         self.reset_maze_container(self.MATRIZ,container)
-        matriz_amplitude = self.MATRIZ
-        Grid.paint_path(maze.amplitude(matriz_amplitude, inicio=[1, 1], fim=[
-                        int(self.entry_end1.get()), int(self.entry_end.get())]), container)
+        Grid.paint_path(maze.busca.custo_uniforme(self.MATRIZ,inicio=1, fim=5),container,self.MATRIZ)
 
-    def activate_find_path_profundidade(self, container):
+    def activate_greedy(self, container):
         self.reset_maze_container(self.MATRIZ,container)
-        matriz_profundidade = self.MATRIZ
+        Grid.paint_path(maze.busca.greedy(self.MATRIZ,inicio=1, fim=5),container,self.MATRIZ)
 
-        Grid.paint_path(maze.profundidade(matriz_profundidade, inicio=[1, 1], fim=[
-                        int(self.entry_end1.get()), int(self.entry_end.get())]), container)
+    # def activate_a(self, container):
+    #     self.reset_maze_container(self.MATRIZ,container)
+    #     MATRIZ_PROFUNDIDADE_LIMITADA = self.MATRIZ
 
-    def activate_find_path_profundidade_limitada(self, container):
-        self.reset_maze_container(self.MATRIZ,container)
-        MATRIZ_PROFUNDIDADE_LIMITADA = self.MATRIZ
+    #     Grid.paint_path(maze.a_estrela(MATRIZ_PROFUNDIDADE_LIMITADA, inicio=[1, 1], fim=[int(
+    #         self.entry_end1.get()), int(self.entry_end.get())], container))
 
-        Grid.paint_path(maze.prof_limitada(MATRIZ_PROFUNDIDADE_LIMITADA, inicio=[1, 1], fim=[int(
-            self.entry_end1.get()), int(self.entry_end.get())], limite=int(self.text_limit.get())), container)
+    # def activate_aia(self, container):
+    #     self.reset_maze_container(self.MATRIZ,container)
+    #     matriz_prof_interativo = self.MATRIZ
 
-    def activate_find_path_aprofundamento_interativo(self, container):
-        self.reset_maze_container(self.MATRIZ,container)
-        matriz_prof_interativo = self.MATRIZ
-
-        Grid.paint_path(maze.aprof_iterativo(matriz_prof_interativo, inicio=[1, 1], fim=[int(
-            self.entry_end1.get()), int(self.entry_end.get())], lim_max=int(self.text_limit.get())), container)
+    #     Grid.paint_path(maze.aia_estrela(matriz_prof_interativo, inicio=[1, 1], fim=[int(
+    #         self.entry_end1.get()), int(self.entry_end.get())], lim_max=int(self.text_limit.get())), container)
 
     def clean_maze_container(self, container):
         # Itere sobre os widgets no container e destrua-os
