@@ -162,17 +162,32 @@ class lista(object):
 
 
 def convertAndSetMatrixToGraph(matriz):
-    nosLocal = []  # Lista de nós
-    grafoLocal = []  # Lista de conexões entre os nós
+    nosLocal = []  # Lista de IDs dos nós
+    grafosLocal = []  # Lista de arestas para representar o grafo
 
-    # Defina a função para adicionar conexões entre nós
-    def adicionar_conexao(origem, destino, peso):
-        grafoLocal[origem].append([destino, peso])
+    rows = len(matriz)
+    cols = len(matriz[0])
 
-    # Inicialize a lista de nós e o grafo
-    for i in range(len(matriz) * len(matriz[0])):
-        nosLocal.append(i + 1)  # Nós representados como números crescentes
-        grafoLocal.append([])  # Inicialize uma lista vazia para as conexões
+    # Crie os nós e inicialize o grafo
+    for i in range(rows):
+        for j in range(cols):
+            no_id = i * cols + j  # Gere IDs incrementais 
+            nosLocal.append(no_id)
+            conexoes = []
+
+            # Verifique as direções possíveis com base na posição
+            if j < cols - 1:  # Direita
+                conexoes.append((no_id + 1, matriz[i][j + 1]))
+            if j > 0:  # Esquerda
+                conexoes.append((no_id - 1, matriz[i][j - 1]))
+            if i < rows - 1:  # Abaixo
+                conexoes.append((no_id + cols, matriz[i + 1][j]))
+            if i > 0:  # Acima
+                conexoes.append((no_id - cols, matriz[i - 1][j]))
+
+            grafosLocal.append(conexoes)
+
+
 
     def gera_H(n):
         aux = busca()
@@ -188,21 +203,20 @@ def convertAndSetMatrixToGraph(matriz):
             i += 1
         return h
 
-    # Percorra a matriz e adicione as conexões entre nós
-    for i in range(len(matriz)):
-        for j in range(len(matriz[i])):
-            no_atual = i * len(matriz[i]) + j
-            if i < len(matriz) - 1:
-                adicionar_conexao(no_atual, no_atual + len(matriz[i]), matriz[i + 1][j])
-            if j < len(matriz[i]) - 1:
-                adicionar_conexao(no_atual, no_atual + 1, matriz[i][j + 1])
-    return grafoLocal,nosLocal
+    return grafosLocal,nosLocal
 
 class busca(object):
 
 
     def custo_uniforme(matriz,inicio, fim):
         grafo,nos =convertAndSetMatrixToGraph(matriz)
+
+        print("================================================")
+        print("ALVO: "+str(fim))
+        print("")
+        print("\nGRAFO: "+str(grafo))
+        print("================================================")
+
         l1 = lista()
         l2 = lista()
         visitado = []

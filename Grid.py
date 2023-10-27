@@ -60,7 +60,7 @@ def paint_maze(matriz, container):
 def paint_path(visitadoArray,container,matriz):
 
 
-    for cell in visitadoArray:
+    for cell in visitadoArray[0]:
         x, y = encontrar_posicao(cell,matriz)
         entry.change_entry_color(container, x+1, y+1, "yellow")
 
@@ -74,12 +74,12 @@ def paint_path(visitadoArray,container,matriz):
 
 def encontrar_id(y,x,matriz):
     # Subtrai 1 de X e Y para ajustar para índices baseados em 0
-    id = x + (y - 1) *(len(matriz)/2)-2
+    id = x * len(matriz[0]) + y
     return int(id)
 
 def encontrar_posicao(id,matriz):
-    x = (id - 1) % len(matriz) 
-    y = (id - 1) // len(matriz) 
+    x = (id) % len(matriz[0]) 
+    y = (id) // len(matriz) 
     return x, y
 
 
