@@ -58,19 +58,9 @@ def paint_maze(matriz, container):
         rowCount=rowCount+1
 
 def paint_path(visitadoArray,container,matriz):
-
-
     for cell in visitadoArray[0]:
         x, y = encontrar_posicao(cell,matriz)
         entry.change_entry_color(container, x+1, y+1, "yellow")
-
-    # for row in matriz:
-    #     colCount = 0
-    #     for char in row:
-    #         if(char==2):
-    #             entry.change_entry_color(container, rowCount+1, colCount+1, "blue")
-    #         colCount=colCount+1
-    #     rowCount=rowCount+1
 
 def encontrar_id(y,x,matriz):
     # Subtrai 1 de X e Y para ajustar para índices baseados em 0

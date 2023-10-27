@@ -189,26 +189,27 @@ def convertAndSetMatrixToGraph(matriz):
 
 
 
-    def gera_H(n):
-        aux = busca()
-        h = np.zeros((n,n),int)
-        i = 0
-        for no_origem in nosLocal:
-            j = 0
-            for no_destino in nosLocal:
-                if no_origem != no_destino:
-                    cam, v  = aux.custo_uniforme(matriz,no_origem, no_destino)
-                    h[i][j] = v*rd.uniform(0,1)
-                j += 1
-            i += 1
-        return h
+
 
     return grafosLocal,nosLocal
 
+def gera_H(n,nosLocal,matriz):
+    aux = busca()
+    h = np.zeros((n,n),int)
+    i = 0
+    for no_origem in nosLocal:
+        j = 0
+        for no_destino in nosLocal:
+            if no_origem != no_destino:
+                cam, v  = aux.custo_uniforme(matriz,no_origem, no_destino)
+                h[i][j] = v*rd.uniform(0,1)
+            j += 1
+        i += 1
+    return h
 class busca(object):
 
 
-    def custo_uniforme(matriz,inicio, fim):
+    def custo_uniforme(self,matriz,inicio, fim):
         grafo,nos =convertAndSetMatrixToGraph(matriz)
 
         print("================================================")
@@ -271,8 +272,8 @@ class busca(object):
 
 
     def greedy(matriz,inicio, fim):
-        grafo,nos,h =convertAndSetMatrixToGraph(matriz)
-
+        grafo,nos =convertAndSetMatrixToGraph(matriz)
+        h = gera_H(len(nos),nos,matriz)
         ind_f = nos.index(fim)
         l1 = lista()
         l2 = lista()
@@ -284,6 +285,7 @@ class busca(object):
         linha.append(inicio)
         linha.append(0)
         visitado.append(linha)
+        visitadoArray = []
 
         while l1.vazio() == False:
             atual = l1.deletaPrimeiro()
@@ -325,8 +327,9 @@ class busca(object):
                         linha.append(v2)
                         visitado.append(linha)
 
-        return "Caminho não encontrado"
-
+        for sublista in visitado:
+            visitadoArray.extend(sublista)  # Adiciona os elementos da sublista à lista final
+        return visitadoArray
 
     def a_estrela(matriz,inicio, fim):
         grafo,nos,h =convertAndSetMatrixToGraph(matriz)
