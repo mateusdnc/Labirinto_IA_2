@@ -22,3 +22,7 @@ def change_entry_text(container, row, col, texto):
                 break
     if entry:  # Se o Entry desejado foi encontrado, altera a cor
         entry.insert(0, texto)  # Insere o novo texto na Entry
+
+
+def change_text_by_entry(widget, texto):
+    widget.config(text=texto)

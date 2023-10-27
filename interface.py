@@ -1,5 +1,6 @@
 import tkinter as tk
 import Grid
+import entry
 import maze
 
 # Variaveis do tamanho da janela do Tkinter
@@ -91,12 +92,12 @@ class Application(tk.Frame):
 
         # Custo Uniforme
         button_find_path_amplitude = tk.Button(
-            text="Custo uniforme", command=lambda: self.activate_uniform_cost(container_maze))
+            text="Custo uniforme", command=lambda: self.activate_uniform_cost(container_maze,text_cost))
         button_find_path_amplitude.pack()
 
         # Greedy
         button_find_path_profundidade = tk.Button(
-            text="Greedy", command=lambda: self.activate_greedy(container_maze))
+            text="Greedy", command=lambda: self.activate_greedy(container_maze,text_cost))
         button_find_path_profundidade.pack()
 
         # # A*
@@ -111,6 +112,10 @@ class Application(tk.Frame):
 
         container_maze.pack(fill=tk.X, pady=10, padx=5)
 
+        text_cost = tk.Label(
+            master, text="Cost: ",)
+        text_cost.pack(side=tk.TOP)
+
     def generate_maze(self, container):
         # Obtem matriz com cordenadas do grid
         self.MATRIZ = Grid.make_maze(
@@ -124,15 +129,19 @@ class Application(tk.Frame):
         Grid.paint_maze(matriz, container)
         Grid.paint_outline(matriz, container)
 
-    def activate_uniform_cost(self, container):
+    def activate_uniform_cost(self, container,text_cost):
         self.reset_maze_container(self.MATRIZ,container)
-        Grid.paint_path(maze.busca.custo_uniforme(self,self.MATRIZ,inicio=0, fim=Grid.encontrar_id(int(
-            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ)),container,self.MATRIZ)
+        output = maze.busca.custo_uniforme(self,self.MATRIZ,inicio=0, fim=Grid.encontrar_id(int(
+            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ))
+        Grid.paint_path(output,container,self.MATRIZ)
+        entry.change_text_by_entry(text_cost,"Custo: "+str(output[1]))
 
-    def activate_greedy(self, container):
+    def activate_greedy(self, container,text_cost):
         self.reset_maze_container(self.MATRIZ,container)
-        Grid.paint_path(maze.busca.greedy(self.MATRIZ,inicio=0, fim=Grid.encontrar_id(int(
-            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ)),container,self.MATRIZ)
+        output = maze.busca.greedy(self.MATRIZ,inicio=0, fim=Grid.encontrar_id(int(
+            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ))
+        Grid.paint_path(output,container,self.MATRIZ)
+        entry.change_text_by_entry(text_cost,"Custo: "+str(output[1]))
 
     # def activate_a(self, container):
     #     self.reset_maze_container(self.MATRIZ,container)
