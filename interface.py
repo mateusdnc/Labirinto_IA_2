@@ -72,17 +72,17 @@ class Application(tk.Frame):
         self.entry_end1 = tk.Entry(container_cordx)
         self.entry_end1.pack(side=tk.RIGHT)
 
-        # # Limit field
-        # container_limit = tk.Frame(
-        #     container_find_path, height=200, borderwidth=2)
-        # container_limit.pack(fill=tk.X, padx=5, pady=5)
+        # Limit field
+        container_limit = tk.Frame(
+            container_find_path, height=200, borderwidth=2)
+        container_limit.pack(fill=tk.X, padx=5, pady=5)
 
-        # text_limit = tk.Label(
-        #     container_limit, text="Limit (for prof limited and prof interactive)",)
-        # text_limit.pack(side=tk.LEFT)
+        text_limit = tk.Label(
+            container_limit, text="Limit (AIA*)",)
+        text_limit.pack(side=tk.LEFT)
 
-        # self.text_limit = tk.Entry(container_limit)
-        # self.text_limit.pack(side=tk.RIGHT)
+        self.text_limit = tk.Entry(container_limit)
+        self.text_limit.pack(side=tk.RIGHT)
 
         container_maze = tk.Frame(master, borderwidth=2, relief="groove")
         # Button Make Maze
@@ -92,29 +92,29 @@ class Application(tk.Frame):
 
         # Custo Uniforme
         button_find_path_amplitude = tk.Button(
-            text="Custo uniforme", command=lambda: self.activate_uniform_cost(container_maze,text_cost))
+            text="Custo uniforme", command=lambda: self.activate_uniform_cost(container_maze))
         button_find_path_amplitude.pack()
 
         # Greedy
         button_find_path_profundidade = tk.Button(
-            text="Greedy", command=lambda: self.activate_greedy(container_maze,text_cost))
+            text="Greedy", command=lambda: self.activate_greedy(container_maze))
         button_find_path_profundidade.pack()
 
         # A*
         button_find_path_limitada = tk.Button(
-            text="A*", command=lambda: self.activate_a(container_maze,text_cost))
+            text="A*", command=lambda: self.activate_a(container_maze))
         button_find_path_limitada.pack()
 
         # AIA*
         button_find_path_aprofundamento_interativo = tk.Button(
-            text="AIA*", command=lambda: self.activate_aia(container_maze,text_cost))
+            text="AIA*", command=lambda: self.activate_aia(container_maze))
         button_find_path_aprofundamento_interativo.pack()
 
         container_maze.pack(fill=tk.X, pady=10, padx=5)
 
-        text_cost = tk.Label(
+        self.text_cost = tk.Label(
             master, text="Cost: ",)
-        text_cost.pack(side=tk.TOP)
+        self.text_cost.pack(side=tk.TOP)
 
     def generate_maze(self, container):
         # Obtem matriz com cordenadas do grid
@@ -129,33 +129,33 @@ class Application(tk.Frame):
         Grid.paint_maze(matriz, container)
         Grid.paint_outline(matriz, container)
 
-    def activate_uniform_cost(self, container,text_cost):
+    def activate_uniform_cost(self, container):
         self.reset_maze_container(self.MATRIZ,container)
         output = maze.busca.custo_uniforme(self,self.MATRIZ,inicio=0, fim=Grid.encontrar_id(int(
             self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ))
         Grid.paint_path(output,container,self.MATRIZ)
-        entry.change_text_by_entry(text_cost,"Custo: "+str(output[1]))
+        entry.change_text_by_entry(self.text_cost,"Custo: "+str(output[1]))
 
-    def activate_greedy(self, container,text_cost):
+    def activate_greedy(self, container):
         self.reset_maze_container(self.MATRIZ,container)
         output = maze.busca.greedy(self.MATRIZ,inicio=0, fim=Grid.encontrar_id(int(
             self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ))
         Grid.paint_path(output,container,self.MATRIZ)
-        entry.change_text_by_entry(text_cost,"Custo: "+str(output[1]))
+        entry.change_text_by_entry(self.text_cost,"Custo: "+str(output[1]))
 
-    def activate_a(self, container,text_cost):
+    def activate_a(self, container):
         self.reset_maze_container(self.MATRIZ,container)
         output = maze.busca.a_estrela(self.MATRIZ,inicio=0, fim=Grid.encontrar_id(int(
             self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ))
         Grid.paint_path(output,container,self.MATRIZ)
-        entry.change_text_by_entry(text_cost,"Custo: "+str(output[1]))
+        entry.change_text_by_entry(self.text_cost,"Custo: "+str(output[1]))
 
-    def activate_aia(self, container,text_cost):
+    def activate_aia(self, container):
         self.reset_maze_container(self.MATRIZ,container)
         output = maze.busca.aia_estrela(self.MATRIZ,inicio=0, fim=Grid.encontrar_id(int(
-            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ),limite=10)
+            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ),limite=int(self.text_limit.get()))
         Grid.paint_path(output,container,self.MATRIZ)
-        entry.change_text_by_entry(text_cost,"Custo: "+str(output[1]))
+        entry.change_text_by_entry(self.text_cost,"Custo: "+str(output[1]))
 
     def clean_maze_container(self, container):
         # Itere sobre os widgets no container e destrua-os
