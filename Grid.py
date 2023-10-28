@@ -32,19 +32,15 @@ def paint_outline(matriz, container):
     for h in range((len(matriz)-1)):
         # Define o cabecalho com as cordenadas
         entry.change_entry_text(container, h+1, 0, h)
-        # Pinta toda a primeira linha de preto
-       # entry.change_entry_color(container, h+1, 1, "black")
-        # Pinta toda a ultima linha de preto
-        #entry.change_entry_color(container, h+1, len(matriz)-1, "black")
+        entry.change_entry_color(container,h+1, 0, "aquamarine1")
+
 
     #Preenche horizontalmente
     for w in range(len(matriz[0])):
         # Define o cabecalho com as cordenadas
         entry.change_entry_text(container, 0, w+1, w)
-        # Pinta toda a primeira linha de preto
-        #entry.change_entry_color(container, 1, w+1, "black")
-        # Pinta toda a ultima linha de preto
-       # entry.change_entry_color(container, len(matriz)-1, w+1, "black")
+        entry.change_entry_color(container, 0, w+1, "aquamarine1")
+
 
 def paint_maze(matriz, container):
     rowCount=0
