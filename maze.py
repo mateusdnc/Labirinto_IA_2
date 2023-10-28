@@ -221,7 +221,7 @@ class busca(object):
         l1 = lista()
         l2 = lista()
         visitado = []
-        visitadoArray = []
+        
 
         l1.insereUltimo(inicio, 0, 0, None)
         l2.insereUltimo(inicio, 0, 0, None)
@@ -266,9 +266,6 @@ class busca(object):
                         linha.append(novo[0])
                         linha.append(v2)
                         visitado.append(linha)
-        for sublista in visitado:
-            visitadoArray.extend(sublista)  # Adiciona os elementos da sublista à lista final
-        return visitadoArray
 
 
     def greedy(matriz,inicio, fim):
@@ -285,7 +282,7 @@ class busca(object):
         linha.append(inicio)
         linha.append(0)
         visitado.append(linha)
-        visitadoArray = []
+        
 
         while l1.vazio() == False:
             atual = l1.deletaPrimeiro()
@@ -327,10 +324,7 @@ class busca(object):
                         linha.append(v2)
                         visitado.append(linha)
 
-        for sublista in visitado:
-            visitadoArray.extend(sublista)  # Adiciona os elementos da sublista à lista final
-        return visitadoArray
-
+      
     def a_estrela(matriz,inicio, fim):
         grafo,nos =convertAndSetMatrixToGraph(matriz)
         h = gera_H(len(nos),nos,matriz)    
@@ -387,10 +381,7 @@ class busca(object):
                         linha.append(v2)
                         visitado.append(linha)
 
-        for sublista in visitado:
-            visitadoArray.extend(sublista)  # Adiciona os elementos da sublista à lista final
-        return visitadoArray
-
+   
     def aia_estrela(matriz,inicio, fim, limite):
         grafo,nos =convertAndSetMatrixToGraph(matriz)
         h = gera_H(len(nos),nos,matriz)
@@ -455,7 +446,5 @@ class busca(object):
                         lim_exc.append(v1)
             limite = sum(lim_exc)/len(lim_exc)
 
-        for sublista in visitado:
-            visitadoArray.extend(sublista)  # Adiciona os elementos da sublista à lista final
-        return visitadoArray
+  
 
