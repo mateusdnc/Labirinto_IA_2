@@ -14,3 +14,4 @@ Algoritimos suportados:
 
 ### Dependencies
 - Tkinter
+- Numpy
