@@ -212,11 +212,11 @@ class busca(object):
     def custo_uniforme(self,matriz,inicio, fim):
         grafo,nos =convertAndSetMatrixToGraph(matriz)
 
-        print("================================================")
+        # print("================================================")
         print("ALVO: "+str(fim))
-        print("")
-        print("\nGRAFO: "+str(grafo))
-        print("================================================")
+        # print("")
+        # print("\nGRAFO: "+str(grafo))
+        # print("================================================")
 
         l1 = lista()
         l2 = lista()
@@ -236,8 +236,8 @@ class busca(object):
             if atual.estado == fim:
                 caminho = []
                 caminho = l2.exibeArvore2(atual.estado, atual.valor1)
-                print("Cópia da árvore:\n", l2.exibeLista())
-                print("\nÁrvore de busca:\n", l1.exibeLista(), "\n")
+                # print("Cópia da árvore:\n", l2.exibeLista())
+                # print("\nÁrvore de busca:\n", l1.exibeLista(), "\n")
                 return caminho, atual.valor2
 
             ind = nos.index(atual.estado)
@@ -332,13 +332,14 @@ class busca(object):
         return visitadoArray
 
     def a_estrela(matriz,inicio, fim):
-        grafo,nos,h =convertAndSetMatrixToGraph(matriz)
-    
+        grafo,nos =convertAndSetMatrixToGraph(matriz)
+        h = gera_H(len(nos),nos,matriz)    
 
         ind_f = nos.index(fim)
         l1 = lista()
         l2 = lista()
         visitado = []
+        visitadoArray=[]
 
         l1.insereUltimo(inicio, 0, 0, None)
         l2.insereUltimo(inicio, 0, 0, None)
@@ -386,12 +387,13 @@ class busca(object):
                         linha.append(v2)
                         visitado.append(linha)
 
-        return "Caminho não encontrado"
-
+        for sublista in visitado:
+            visitadoArray.extend(sublista)  # Adiciona os elementos da sublista à lista final
+        return visitadoArray
 
     def aia_estrela(matriz,inicio, fim, limite):
-        grafo,nos,h =convertAndSetMatrixToGraph(matriz)
-
+        grafo,nos =convertAndSetMatrixToGraph(matriz)
+        h = gera_H(len(nos),nos,matriz)
 
         ind_f = nos.index(fim)
         while True:
@@ -399,6 +401,7 @@ class busca(object):
             l1 = lista()
             l2 = lista()
             visitado = []
+            visitadoArray=[]
 
             l1.insereUltimo(inicio, 0, 0, None)
             l2.insereUltimo(inicio, 0, 0, None)
@@ -452,5 +455,7 @@ class busca(object):
                         lim_exc.append(v1)
             limite = sum(lim_exc)/len(lim_exc)
 
-        return "Caminho não encontrado"
+        for sublista in visitado:
+            visitadoArray.extend(sublista)  # Adiciona os elementos da sublista à lista final
+        return visitadoArray
 

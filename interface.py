@@ -100,15 +100,15 @@ class Application(tk.Frame):
             text="Greedy", command=lambda: self.activate_greedy(container_maze,text_cost))
         button_find_path_profundidade.pack()
 
-        # # A*
-        # button_find_path_limitada = tk.Button(
-        #     text="A*", command=lambda: self.activate_a(container_maze))
-        # button_find_path_limitada.pack()
+        # A*
+        button_find_path_limitada = tk.Button(
+            text="A*", command=lambda: self.activate_a(container_maze,text_cost))
+        button_find_path_limitada.pack()
 
-        # # AIA*
-        # button_find_path_aprofundamento_interativo = tk.Button(
-        #     text="AIA*", command=lambda: self.activate_aia(container_maze))
-        # button_find_path_aprofundamento_interativo.pack()
+        # AIA*
+        button_find_path_aprofundamento_interativo = tk.Button(
+            text="AIA*", command=lambda: self.activate_aia(container_maze,text_cost))
+        button_find_path_aprofundamento_interativo.pack()
 
         container_maze.pack(fill=tk.X, pady=10, padx=5)
 
@@ -143,19 +143,19 @@ class Application(tk.Frame):
         Grid.paint_path(output,container,self.MATRIZ)
         entry.change_text_by_entry(text_cost,"Custo: "+str(output[1]))
 
-    # def activate_a(self, container):
-    #     self.reset_maze_container(self.MATRIZ,container)
-    #     MATRIZ_PROFUNDIDADE_LIMITADA = self.MATRIZ
+    def activate_a(self, container,text_cost):
+        self.reset_maze_container(self.MATRIZ,container)
+        output = maze.busca.a_estrela(self.MATRIZ,inicio=0, fim=Grid.encontrar_id(int(
+            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ))
+        Grid.paint_path(output,container,self.MATRIZ)
+        entry.change_text_by_entry(text_cost,"Custo: "+str(output[1]))
 
-    #     Grid.paint_path(maze.a_estrela(MATRIZ_PROFUNDIDADE_LIMITADA, inicio=[1, 1], fim=[int(
-    #         self.entry_end1.get()), int(self.entry_end.get())], container))
-
-    # def activate_aia(self, container):
-    #     self.reset_maze_container(self.MATRIZ,container)
-    #     matriz_prof_interativo = self.MATRIZ
-
-    #     Grid.paint_path(maze.aia_estrela(matriz_prof_interativo, inicio=[1, 1], fim=[int(
-    #         self.entry_end1.get()), int(self.entry_end.get())], lim_max=int(self.text_limit.get())), container)
+    def activate_aia(self, container,text_cost):
+        self.reset_maze_container(self.MATRIZ,container)
+        output = maze.busca.aia_estrela(self.MATRIZ,inicio=0, fim=Grid.encontrar_id(int(
+            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ),limite=10)
+        Grid.paint_path(output,container,self.MATRIZ)
+        entry.change_text_by_entry(text_cost,"Custo: "+str(output[1]))
 
     def clean_maze_container(self, container):
         # Itere sobre os widgets no container e destrua-os
@@ -172,7 +172,7 @@ root.geometry("{}x{}+{}+{}".format(window_width,
               window_height, x_cordinate, y_cordinate))
 
 Application(root)
-root.title("Labirinto IA")
+root.title("Labirinto IA - 2")
 # Impede o redimensionamento horizontal e vertical
 # root.resizable(False, False)
 root.mainloop()
