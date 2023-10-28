@@ -1,6 +1,7 @@
 import numpy as np
 import random as rd
 
+
 class No(object):
     def __init__(self, pai=None, estado=None, valor1=None,
                  valor2=None, anterior=None, proximo=None):
@@ -158,7 +159,6 @@ class lista(object):
 
     def ultimo(self):
         return self.tail
-    
 
 
 def convertAndSetMatrixToGraph(matriz):
@@ -171,7 +171,7 @@ def convertAndSetMatrixToGraph(matriz):
     # Crie os nós e inicialize o grafo
     for i in range(rows):
         for j in range(cols):
-            no_id = i * cols + j  # Gere IDs incrementais 
+            no_id = i * cols + j  # Gere IDs incrementais
             nosLocal.append(no_id)
             conexoes = []
 
@@ -187,30 +187,28 @@ def convertAndSetMatrixToGraph(matriz):
 
             grafosLocal.append(conexoes)
 
+    return grafosLocal, nosLocal
 
 
-
-
-    return grafosLocal,nosLocal
-
-def gera_H(n,nosLocal,matriz):
+def gera_H(n, nosLocal, matriz):
     aux = busca()
-    h = np.zeros((n,n),int)
+    h = np.zeros((n, n), int)
     i = 0
     for no_origem in nosLocal:
         j = 0
         for no_destino in nosLocal:
             if no_origem != no_destino:
-                cam, v  = aux.custo_uniforme(matriz,no_origem, no_destino)
-                h[i][j] = v*rd.uniform(0,1)
+                cam, v = aux.custo_uniforme(matriz, no_origem, no_destino)
+                h[i][j] = v*rd.uniform(0, 1)
             j += 1
         i += 1
     return h
+
+
 class busca(object):
 
-
-    def custo_uniforme(self,matriz,inicio, fim):
-        grafo,nos =convertAndSetMatrixToGraph(matriz)
+    def custo_uniforme(self, matriz, inicio, fim):
+        grafo, nos = convertAndSetMatrixToGraph(matriz)
 
         # print("================================================")
         print("ALVO: "+str(fim))
@@ -221,7 +219,6 @@ class busca(object):
         l1 = lista()
         l2 = lista()
         visitado = []
-        
 
         l1.insereUltimo(inicio, 0, 0, None)
         l2.insereUltimo(inicio, 0, 0, None)
@@ -267,10 +264,9 @@ class busca(object):
                         linha.append(v2)
                         visitado.append(linha)
 
-
-    def greedy(matriz,inicio, fim):
-        grafo,nos =convertAndSetMatrixToGraph(matriz)
-        h = gera_H(len(nos),nos,matriz)
+    def greedy(matriz, inicio, fim):
+        grafo, nos = convertAndSetMatrixToGraph(matriz)
+        h = gera_H(len(nos), nos, matriz)
         ind_f = nos.index(fim)
         l1 = lista()
         l2 = lista()
@@ -282,7 +278,6 @@ class busca(object):
         linha.append(inicio)
         linha.append(0)
         visitado.append(linha)
-        
 
         while l1.vazio() == False:
             atual = l1.deletaPrimeiro()
@@ -324,16 +319,15 @@ class busca(object):
                         linha.append(v2)
                         visitado.append(linha)
 
-      
-    def a_estrela(matriz,inicio, fim):
-        grafo,nos =convertAndSetMatrixToGraph(matriz)
-        h = gera_H(len(nos),nos,matriz)    
+    def a_estrela(matriz, inicio, fim):
+        grafo, nos = convertAndSetMatrixToGraph(matriz)
+        h = gera_H(len(nos), nos, matriz)
 
         ind_f = nos.index(fim)
         l1 = lista()
         l2 = lista()
         visitado = []
-        visitadoArray=[]
+        visitadoArray = []
 
         l1.insereUltimo(inicio, 0, 0, None)
         l2.insereUltimo(inicio, 0, 0, None)
@@ -381,10 +375,9 @@ class busca(object):
                         linha.append(v2)
                         visitado.append(linha)
 
-   
-    def aia_estrela(matriz,inicio, fim, limite):
-        grafo,nos =convertAndSetMatrixToGraph(matriz)
-        h = gera_H(len(nos),nos,matriz)
+    def aia_estrela(matriz, inicio, fim, limite):
+        grafo, nos = convertAndSetMatrixToGraph(matriz)
+        h = gera_H(len(nos), nos, matriz)
 
         ind_f = nos.index(fim)
         while True:
@@ -392,7 +385,7 @@ class busca(object):
             l1 = lista()
             l2 = lista()
             visitado = []
-            visitadoArray=[]
+            visitadoArray = []
 
             l1.insereUltimo(inicio, 0, 0, None)
             l2.insereUltimo(inicio, 0, 0, None)
@@ -445,6 +438,3 @@ class busca(object):
                     else:
                         lim_exc.append(v1)
             limite = sum(lim_exc)/len(lim_exc)
-
-  
-

@@ -11,9 +11,11 @@ def make_maze(w, h):
             h - o número de linhas do labirinto (padrão: 8)
     """
 
-    matrizConvertida=[[random.randint(1,9) for _ in range((w*2)+1)] for i in range((h*2)+1)]
+    matrizConvertida = [
+        [random.randint(1, 9) for _ in range((w*2)+1)] for i in range((h*2)+1)]
 
     return matrizConvertida
+
 
 def draw_grid(container, height, width):
     """
@@ -28,14 +30,13 @@ def draw_grid(container, height, width):
 
 
 def paint_outline(matriz, container):
-    #Preenche verticalmente
+    # Preenche verticalmente
     for h in range((len(matriz)-1)):
         # Define o cabecalho com as cordenadas
         entry.change_entry_text(container, h+1, 0, h)
-        entry.change_entry_color(container,h+1, 0, "aquamarine1")
+        entry.change_entry_color(container, h+1, 0, "aquamarine1")
 
-
-    #Preenche horizontalmente
+    # Preenche horizontalmente
     for w in range(len(matriz[0])):
         # Define o cabecalho com as cordenadas
         entry.change_entry_text(container, 0, w+1, w)
@@ -43,29 +44,31 @@ def paint_outline(matriz, container):
 
 
 def paint_maze(matriz, container):
-    rowCount=0
-    idCont=0
+    rowCount = 0
+    idCont = 0
     for row in matriz:
         colCount = 0
         for char in row:
-            entry.change_entry_text(container, rowCount+1, colCount+1, str(idCont)+" - "+str(char))
-            idCont=idCont+1
-            colCount=colCount+1
-        rowCount=rowCount+1
+            entry.change_entry_text(
+                container, rowCount+1, colCount+1, str(idCont)+" - "+str(char))
+            idCont = idCont+1
+            colCount = colCount+1
+        rowCount = rowCount+1
 
-def paint_path(visitadoArray,container,matriz):
+
+def paint_path(visitadoArray, container, matriz):
     for cell in visitadoArray[0]:
-        x, y = encontrar_posicao(cell,matriz)
+        x, y = encontrar_posicao(cell, matriz)
         entry.change_entry_color(container, x+1, y+1, "yellow")
 
-def encontrar_id(y,x,matriz):
+
+def encontrar_id(y, x, matriz):
     # Subtrai 1 de X e Y para ajustar para índices baseados em 0
     id = x * len(matriz[0]) + y
     return int(id)
 
-def encontrar_posicao(id,matriz):
-    x = (id) % len(matriz[0]) 
-    y = (id) // len(matriz) 
+
+def encontrar_posicao(id, matriz):
+    x = (id) % len(matriz[0])
+    y = (id) // len(matriz)
     return x, y
-
-

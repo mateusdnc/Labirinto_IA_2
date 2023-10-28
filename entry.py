@@ -12,6 +12,7 @@ def change_entry_color(container, row, col, new_color):
     if entry:  # Se o Entry desejado foi encontrado, altera a cor
         entry.config(bg=new_color)
 
+
 def change_entry_text(container, row, col, texto):
     entry = None
     for widget in container.winfo_children():  # Lista todos os widgets que estão dentro do container

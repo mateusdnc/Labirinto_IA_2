@@ -44,7 +44,6 @@ class Application(tk.Frame):
         self.entry_height = tk.Entry(container_height)
         self.entry_height.pack(side=tk.RIGHT)
 
-
         # Find path container
         container_find_path = tk.Frame(
             master, height=200, borderwidth=2, relief="groove")
@@ -120,9 +119,9 @@ class Application(tk.Frame):
         # Obtem matriz com cordenadas do grid
         self.MATRIZ = Grid.make_maze(
             int(self.entry_height.get()), int(self.entry_width.get()))
-        self.reset_maze_container(self.MATRIZ,container)
+        self.reset_maze_container(self.MATRIZ, container)
 
-    def reset_maze_container(self, matriz,container):
+    def reset_maze_container(self, matriz, container):
         # Limpa o container container_maze se já houver widgets
         self.clean_maze_container(container)
         Grid.draw_grid(container, len(matriz), len(matriz[0]))
@@ -130,32 +129,32 @@ class Application(tk.Frame):
         Grid.paint_outline(matriz, container)
 
     def activate_uniform_cost(self, container):
-        self.reset_maze_container(self.MATRIZ,container)
-        output = maze.busca.custo_uniforme(self,self.MATRIZ,inicio=0, fim=Grid.encontrar_id(int(
-            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ))
-        Grid.paint_path(output,container,self.MATRIZ)
-        entry.change_text_by_entry(self.text_cost,"Custo: "+str(output[1]))
+        self.reset_maze_container(self.MATRIZ, container)
+        output = maze.busca.custo_uniforme(self, self.MATRIZ, inicio=0, fim=Grid.encontrar_id(int(
+            self.entry_end1.get()), int(self.entry_end.get()), self.MATRIZ))
+        Grid.paint_path(output, container, self.MATRIZ)
+        entry.change_text_by_entry(self.text_cost, "Custo: "+str(output[1]))
 
     def activate_greedy(self, container):
-        self.reset_maze_container(self.MATRIZ,container)
-        output = maze.busca.greedy(self.MATRIZ,inicio=0, fim=Grid.encontrar_id(int(
-            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ))
-        Grid.paint_path(output,container,self.MATRIZ)
-        entry.change_text_by_entry(self.text_cost,"Custo: "+str(output[1]))
+        self.reset_maze_container(self.MATRIZ, container)
+        output = maze.busca.greedy(self.MATRIZ, inicio=0, fim=Grid.encontrar_id(int(
+            self.entry_end1.get()), int(self.entry_end.get()), self.MATRIZ))
+        Grid.paint_path(output, container, self.MATRIZ)
+        entry.change_text_by_entry(self.text_cost, "Custo: "+str(output[1]))
 
     def activate_a(self, container):
-        self.reset_maze_container(self.MATRIZ,container)
-        output = maze.busca.a_estrela(self.MATRIZ,inicio=0, fim=Grid.encontrar_id(int(
-            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ))
-        Grid.paint_path(output,container,self.MATRIZ)
-        entry.change_text_by_entry(self.text_cost,"Custo: "+str(output[1]))
+        self.reset_maze_container(self.MATRIZ, container)
+        output = maze.busca.a_estrela(self.MATRIZ, inicio=0, fim=Grid.encontrar_id(int(
+            self.entry_end1.get()), int(self.entry_end.get()), self.MATRIZ))
+        Grid.paint_path(output, container, self.MATRIZ)
+        entry.change_text_by_entry(self.text_cost, "Custo: "+str(output[1]))
 
     def activate_aia(self, container):
-        self.reset_maze_container(self.MATRIZ,container)
-        output = maze.busca.aia_estrela(self.MATRIZ,inicio=0, fim=Grid.encontrar_id(int(
-            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ),limite=int(self.text_limit.get()))
-        Grid.paint_path(output,container,self.MATRIZ)
-        entry.change_text_by_entry(self.text_cost,"Custo: "+str(output[1]))
+        self.reset_maze_container(self.MATRIZ, container)
+        output = maze.busca.aia_estrela(self.MATRIZ, inicio=0, fim=Grid.encontrar_id(int(
+            self.entry_end1.get()), int(self.entry_end.get()), self.MATRIZ), limite=int(self.text_limit.get()))
+        Grid.paint_path(output, container, self.MATRIZ)
+        entry.change_text_by_entry(self.text_cost, "Custo: "+str(output[1]))
 
     def clean_maze_container(self, container):
         # Itere sobre os widgets no container e destrua-os
