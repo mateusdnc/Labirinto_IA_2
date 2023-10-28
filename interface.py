@@ -125,7 +125,7 @@ class Application(tk.Frame):
     def reset_maze_container(self, matriz,container):
         # Limpa o container container_maze se já houver widgets
         self.clean_maze_container(container)
-        Grid.draw_grid(container, len(matriz), len(matriz))
+        Grid.draw_grid(container, len(matriz), len(matriz[0]))
         Grid.paint_maze(matriz, container)
         Grid.paint_outline(matriz, container)
 

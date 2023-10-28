@@ -11,7 +11,7 @@ def make_maze(w, h):
             h - o número de linhas do labirinto (padrão: 8)
     """
 
-    matrizConvertida=[[random.randint(1,9) for _ in range((w*2)+1)] for i in range((h*2)+2)]
+    matrizConvertida=[[random.randint(1,9) for _ in range((w*2)+1)] for i in range((h*2)+1)]
 
     return matrizConvertida
 
