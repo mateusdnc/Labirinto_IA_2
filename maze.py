@@ -264,6 +264,8 @@ class busca(object):
                         linha.append(v2)
                         visitado.append(linha)
 
+        return "Caminho não encontrado"
+
     def greedy(matriz, inicio, fim):
         grafo, nos = convertAndSetMatrixToGraph(matriz)
         h = gera_H(len(nos), nos, matriz)
@@ -318,6 +320,8 @@ class busca(object):
                         linha.append(novo[0])
                         linha.append(v2)
                         visitado.append(linha)
+
+        return "Caminho não encontrado"
 
     def a_estrela(matriz, inicio, fim):
         grafo, nos = convertAndSetMatrixToGraph(matriz)
@@ -374,12 +378,15 @@ class busca(object):
                         linha.append(v2)
                         visitado.append(linha)
 
+        return "Caminho não encontrado"
+
     def aia_estrela(matriz, inicio, fim):
         grafo, nos = convertAndSetMatrixToGraph(matriz)
         h = gera_H(len(nos), nos, matriz)
         pi = nos.index(inicio)
         pf = nos.index(fim)
         limite = h[pi][pf]
+
         ind_f = nos.index(fim)
         while True:
             lim_exc = []
