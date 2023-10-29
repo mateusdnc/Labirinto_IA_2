@@ -2,6 +2,7 @@ import tkinter as tk
 import Grid
 import entry
 import maze
+import time
 
 # Variaveis do tamanho da janela do Tkinter
 window_height = 600
@@ -129,32 +130,68 @@ class Application(tk.Frame):
         Grid.paint_outline(matriz, container)
 
     def activate_uniform_cost(self, container):
+        # Start timer
+        start_time = time.perf_counter()
+
         self.reset_maze_container(self.MATRIZ, container)
         output = maze.busca.custo_uniforme(self, self.MATRIZ, inicio=0, fim=Grid.encontrar_id(int(
             self.entry_end1.get()), int(self.entry_end.get()), self.MATRIZ))
         Grid.paint_path(output, container, self.MATRIZ)
-        entry.change_text_by_entry(self.text_cost, "Custo: "+str(output[1]))
+
+        # End timer
+        end_time = time.perf_counter()
+        elapsed_time = end_time - start_time
+        # Insere o valor do custo e tempo de processamento no label text_cost
+        entry.change_text_by_entry(
+            self.text_cost, "Custo: "+str(output[1])+" \nTempo processamento: "+str("{:.4f}".format(elapsed_time)) + " secs")
 
     def activate_greedy(self, container):
+        # Start timer
+        start_time = time.perf_counter()
+
         self.reset_maze_container(self.MATRIZ, container)
         output = maze.busca.greedy(self.MATRIZ, inicio=0, fim=Grid.encontrar_id(int(
             self.entry_end1.get()), int(self.entry_end.get()), self.MATRIZ))
         Grid.paint_path(output, container, self.MATRIZ)
-        entry.change_text_by_entry(self.text_cost, "Custo: "+str(output[1]))
+
+        # End timer
+        end_time = time.perf_counter()
+        elapsed_time = end_time - start_time
+        # Insere o valor do custo e tempo de processamento no label text_cost
+        entry.change_text_by_entry(
+            self.text_cost, "Custo: "+str(output[1])+" \nTempo processamento: "+str("{:.4f}".format(elapsed_time)) + " secs")
 
     def activate_a(self, container):
+        # Start timer
+        start_time = time.perf_counter()
+
         self.reset_maze_container(self.MATRIZ, container)
         output = maze.busca.a_estrela(self.MATRIZ, inicio=0, fim=Grid.encontrar_id(int(
             self.entry_end1.get()), int(self.entry_end.get()), self.MATRIZ))
         Grid.paint_path(output, container, self.MATRIZ)
-        entry.change_text_by_entry(self.text_cost, "Custo: "+str(output[1]))
+
+        # End timer
+        end_time = time.perf_counter()
+        elapsed_time = end_time - start_time
+        # Insere o valor do custo e tempo de processamento no label text_cost
+        entry.change_text_by_entry(
+            self.text_cost, "Custo: "+str(output[1])+" \nTempo processamento: "+str("{:.4f}".format(elapsed_time)) + " secs")
 
     def activate_aia(self, container):
+        # Start timer
+        start_time = time.perf_counter()
+
         self.reset_maze_container(self.MATRIZ, container)
         output = maze.busca.aia_estrela(self.MATRIZ, inicio=0, fim=Grid.encontrar_id(int(
             self.entry_end1.get()), int(self.entry_end.get()), self.MATRIZ))
         Grid.paint_path(output, container, self.MATRIZ)
-        entry.change_text_by_entry(self.text_cost, "Custo: "+str(output[1]))
+
+        # End timer
+        end_time = time.perf_counter()
+        elapsed_time = end_time - start_time
+        # Insere o valor do custo e tempo de processamento no label text_cost
+        entry.change_text_by_entry(
+            self.text_cost, "Custo: "+str(output[1])+" \nTempo processamento: "+str("{:.4f}".format(elapsed_time)) + " secs")
 
     def clean_maze_container(self, container):
         # Itere sobre os widgets no container e destrua-os
