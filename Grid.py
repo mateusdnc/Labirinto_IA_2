@@ -60,10 +60,12 @@ def paint_path(visitadoArray, container, matriz):
     for count, cell in enumerate(visitadoArray, 0):
         x, y = encontrar_posicao(cell, matriz)
         # Para o primeiro e ultimo resultado, define uma cor diferente
-        if (count == 0 or count == len(visitadoArray)-1):
-            entry.change_entry_color(container, y+1,x+1,  "deeppink1")
+        if (count == 0):
+            entry.change_entry_color(container, y+1, x+1,  "tomato1")
+        elif (count == len(visitadoArray)-1):
+            entry.change_entry_color(container, y+1, x+1,  "lawngreen")
         else:
-            entry.change_entry_color(container, y+1, x+1, "yellow")
+            entry.change_entry_color(container, y+1, x+1, "steelblue1")
 
 
 def encontrar_id(y, x, matriz):
