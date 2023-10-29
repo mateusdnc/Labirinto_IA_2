@@ -12,7 +12,7 @@ def make_maze(w, h):
     """
 
     matrizConvertida = [
-        [random.randint(1, 9) for _ in range((w*2)+1)] for i in range((h*2)+1)]
+        [random.randint(1, 9) for _ in range(w*2)] for i in range(h*2)]
 
     return matrizConvertida
 
