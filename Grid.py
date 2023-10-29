@@ -21,9 +21,9 @@ def draw_grid(container, height, width):
     """
     Cria uma celula para cada medida H e W
     """
-    for x in range(width):
+    for x in range(width+1):
         row = []
-        for y in range(height):
+        for y in range(height+1):
             cell = tk.Entry(container, width=6)
             cell.grid(row=x, column=y)
             row.append(cell)
@@ -31,7 +31,7 @@ def draw_grid(container, height, width):
 
 def paint_outline(matriz, container):
     # Preenche verticalmente
-    for h in range((len(matriz)-1)):
+    for h in range((len(matriz))):
         # Define o cabecalho com as cordenadas
         entry.change_entry_text(container, h+1, 0, h)
         entry.change_entry_color(container, h+1, 0, "aquamarine1")
