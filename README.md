@@ -4,7 +4,7 @@
 run `interface.py`
 
 ### Summary
-Projeto desenvolvido nas aulas de IA para testar algoritimos em um Labirinto criado dinamicamente.
+Projeto desenvolvido nas aulas de IA para testar algoritimos em um grid com pesos criado dinamicamente.
 
 Algoritimos suportados:
 - Custo Uniforme

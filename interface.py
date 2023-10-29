@@ -143,7 +143,7 @@ class Application(tk.Frame):
         elapsed_time = end_time - start_time
         # Insere o valor do custo e tempo de processamento no label text_cost
         entry.change_text_by_entry(
-            self.text_cost, "Custo: "+str(output[1])+" \nTempo processamento: "+str("{:.4f}".format(elapsed_time)) + " secs")
+            self.text_cost, "Custo: "+str(output[1])+" \nTempo de processamento: "+str("{:.4f}".format(elapsed_time)) + " secs")
 
     def activate_greedy(self, container):
         # Start timer
@@ -159,7 +159,7 @@ class Application(tk.Frame):
         elapsed_time = end_time - start_time
         # Insere o valor do custo e tempo de processamento no label text_cost
         entry.change_text_by_entry(
-            self.text_cost, "Custo: "+str(output[1])+" \nTempo processamento: "+str("{:.4f}".format(elapsed_time)) + " secs")
+            self.text_cost, "Custo: "+str(output[1])+" \nTempo de processamento: "+str("{:.4f}".format(elapsed_time)) + " secs")
 
     def activate_a(self, container):
         # Start timer
@@ -175,7 +175,7 @@ class Application(tk.Frame):
         elapsed_time = end_time - start_time
         # Insere o valor do custo e tempo de processamento no label text_cost
         entry.change_text_by_entry(
-            self.text_cost, "Custo: "+str(output[1])+" \nTempo processamento: "+str("{:.4f}".format(elapsed_time)) + " secs")
+            self.text_cost, "Custo: "+str(output[1])+" \nTempo de processamento: "+str("{:.4f}".format(elapsed_time)) + " secs")
 
     def activate_aia(self, container):
         # Start timer
@@ -191,7 +191,7 @@ class Application(tk.Frame):
         elapsed_time = end_time - start_time
         # Insere o valor do custo e tempo de processamento no label text_cost
         entry.change_text_by_entry(
-            self.text_cost, "Custo: "+str(output[1])+" \nTempo processamento: "+str("{:.4f}".format(elapsed_time)) + " secs")
+            self.text_cost, "Custo: "+str(output[1])+" \nTempo de processamento: "+str("{:.4f}".format(elapsed_time)) + " secs")
 
     def clean_maze_container(self, container):
         # Itere sobre os widgets no container e destrua-os
