@@ -71,17 +71,17 @@ class Application(tk.Frame):
         self.entry_end1 = tk.Entry(container_cordx)
         self.entry_end1.pack(side=tk.RIGHT)
 
-        # Limit field
-        container_limit = tk.Frame(
-            container_find_path, height=200, borderwidth=2)
-        container_limit.pack(fill=tk.X, padx=5, pady=5)
+        # # Limit field
+        # container_limit = tk.Frame(
+        #     container_find_path, height=200, borderwidth=2)
+        # container_limit.pack(fill=tk.X, padx=5, pady=5)
 
-        text_limit = tk.Label(
-            container_limit, text="Limit (AIA*)",)
-        text_limit.pack(side=tk.LEFT)
+        # text_limit = tk.Label(
+        #     container_limit, text="Limit (AIA*)",)
+        # text_limit.pack(side=tk.LEFT)
 
-        self.text_limit = tk.Entry(container_limit)
-        self.text_limit.pack(side=tk.RIGHT)
+        # self.text_limit = tk.Entry(container_limit)
+        # self.text_limit.pack(side=tk.RIGHT)
 
         container_maze = tk.Frame(master, borderwidth=2, relief="groove")
         # Button Make Maze
@@ -152,7 +152,7 @@ class Application(tk.Frame):
     def activate_aia(self, container):
         self.reset_maze_container(self.MATRIZ, container)
         output = maze.busca.aia_estrela(self.MATRIZ, inicio=0, fim=Grid.encontrar_id(int(
-            self.entry_end1.get()), int(self.entry_end.get()), self.MATRIZ), limite=int(self.text_limit.get()))
+            self.entry_end1.get()), int(self.entry_end.get()), self.MATRIZ))
         Grid.paint_path(output, container, self.MATRIZ)
         entry.change_text_by_entry(self.text_cost, "Custo: "+str(output[1]))
 

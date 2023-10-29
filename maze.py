@@ -327,7 +327,6 @@ class busca(object):
         l1 = lista()
         l2 = lista()
         visitado = []
-        visitadoArray = []
 
         l1.insereUltimo(inicio, 0, 0, None)
         l2.insereUltimo(inicio, 0, 0, None)
@@ -375,17 +374,18 @@ class busca(object):
                         linha.append(v2)
                         visitado.append(linha)
 
-    def aia_estrela(matriz, inicio, fim, limite):
+    def aia_estrela(matriz, inicio, fim):
         grafo, nos = convertAndSetMatrixToGraph(matriz)
         h = gera_H(len(nos), nos, matriz)
-
+        pi = nos.index(inicio)
+        pf = nos.index(fim)
+        limite = h[pi][pf]
         ind_f = nos.index(fim)
         while True:
             lim_exc = []
             l1 = lista()
             l2 = lista()
             visitado = []
-            visitadoArray = []
 
             l1.insereUltimo(inicio, 0, 0, None)
             l2.insereUltimo(inicio, 0, 0, None)
