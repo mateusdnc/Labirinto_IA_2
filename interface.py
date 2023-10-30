@@ -13,6 +13,10 @@ root = tk.Tk()
 
 class Application(tk.Frame):
     MATRIZ = []
+    h=[]
+    nos=[]
+    grafo =[]
+    inicio=0
 
     entry_width = None
     entry_height = None
@@ -121,6 +125,8 @@ class Application(tk.Frame):
         self.MATRIZ = Grid.make_maze(
             int(self.entry_height.get()), int(self.entry_width.get()))
         self.reset_maze_container(self.MATRIZ, container)
+        self.grafo, self.nos = maze.convertAndSetMatrixToGraph(self.MATRIZ)
+        self.h = maze.gera_H(self.grafo,self.nos,self.h,len(self.nos), self.nos, self.MATRIZ)
 
     def reset_maze_container(self, matriz, container):
         # Limpa o container container_maze se já houver widgets
@@ -134,8 +140,9 @@ class Application(tk.Frame):
         start_time = time.perf_counter()
 
         self.reset_maze_container(self.MATRIZ, container)
-        output = maze.busca.custo_uniforme(self, self.MATRIZ, inicio=0, fim=Grid.encontrar_id(int(
-            self.entry_end1.get()), int(self.entry_end.get()), self.MATRIZ))
+        fim = Grid.encontrar_id(int(
+            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ)
+        output = maze.busca.custo_uniforme(self,self.grafo,self.nos,self.h, self.inicio,fim)
         Grid.paint_path(output[0], container, self.MATRIZ)
 
         # End timer
@@ -150,8 +157,9 @@ class Application(tk.Frame):
         start_time = time.perf_counter()
 
         self.reset_maze_container(self.MATRIZ, container)
-        output = maze.busca.greedy(self.MATRIZ, inicio=0, fim=Grid.encontrar_id(int(
-            self.entry_end1.get()), int(self.entry_end.get()), self.MATRIZ))
+        fim = Grid.encontrar_id(int(
+            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ)
+        output = maze.busca.greedy(self.grafo,self.nos,self.h, self.inicio,fim)
         Grid.paint_path(output[0], container, self.MATRIZ)
 
         # End timer
@@ -166,8 +174,9 @@ class Application(tk.Frame):
         start_time = time.perf_counter()
 
         self.reset_maze_container(self.MATRIZ, container)
-        output = maze.busca.a_estrela(self.MATRIZ, inicio=0, fim=Grid.encontrar_id(int(
-            self.entry_end1.get()), int(self.entry_end.get()), self.MATRIZ))
+        fim = Grid.encontrar_id(int(
+            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ)
+        output = maze.busca.a_estrela(self.grafo,self.nos,self.h, self.inicio,fim)
         Grid.paint_path(output[0], container, self.MATRIZ)
 
         # End timer
@@ -182,8 +191,9 @@ class Application(tk.Frame):
         start_time = time.perf_counter()
 
         self.reset_maze_container(self.MATRIZ, container)
-        output = maze.busca.aia_estrela(self.MATRIZ, inicio=0, fim=Grid.encontrar_id(int(
-            self.entry_end1.get()), int(self.entry_end.get()), self.MATRIZ))
+        fim = Grid.encontrar_id(int(
+            self.entry_end1.get()), int(self.entry_end.get()),self.MATRIZ)
+        output = maze.busca.aia_estrela(self.grafo,self.nos,self.h, self.inicio,fim)
         Grid.paint_path(output[0], container, self.MATRIZ)
 
         # End timer
