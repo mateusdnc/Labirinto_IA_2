@@ -70,11 +70,11 @@ def paint_path(visitadoArray, container, matriz):
 
 def encontrar_id(y, x, matriz):
     # Subtrai 1 de X e Y para ajustar para índices baseados em 0
-    id = x * len(matriz[0]) + y
+    id = x * len(matriz) + y
     return int(id)
 
 
 def encontrar_posicao(id, matriz):
-    x = (id) % len(matriz[0])
+    x = (id) % len(matriz)
     y = (id) // len(matriz)
     return x, y

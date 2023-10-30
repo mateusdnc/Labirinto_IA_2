@@ -190,7 +190,7 @@ def convertAndSetMatrixToGraph(matriz):
     return grafosLocal, nosLocal
 
 
-def gera_H(n, nosLocal, matriz):
+def gera_H(grafo,nos,h,n, nosLocal, matriz):
     aux = busca()
     h = np.zeros((n, n), int)
     i = 0
@@ -198,7 +198,10 @@ def gera_H(n, nosLocal, matriz):
         j = 0
         for no_destino in nosLocal:
             if no_origem != no_destino:
-                cam, v = aux.custo_uniforme(matriz, no_origem, no_destino)
+                cam, v = aux.custo_uniforme(grafo,nos,h, no_origem, no_destino)
+                ale = rd.uniform(0, 1)
+                while(ale < 0.8) :
+                    ale = rd.uniform(0, 1)
                 h[i][j] = v*rd.uniform(0, 1)
             j += 1
         i += 1
@@ -207,9 +210,7 @@ def gera_H(n, nosLocal, matriz):
 
 class busca(object):
 
-    def custo_uniforme(self, matriz, inicio, fim):
-        grafo, nos = convertAndSetMatrixToGraph(matriz)
-
+    def custo_uniforme(self, grafo,nos,h,inicio, fim):
         # print("================================================")
         print("ALVO: "+str(fim))
         # print("")
@@ -257,7 +258,8 @@ class busca(object):
 
                 if flag1:
                     l1.inserePos_X(novo[0], v1, v2, atual)
-                    l2.inserePos_X(novo[0], v1, v2, atual)
+                    # l2.inserePos_X(novo[0], v1, v2, atual)
+                    l2.insereUltimo(novo[0], v1, v2, atual)
                     if flag2:
                         linha = []
                         linha.append(novo[0])
@@ -266,9 +268,7 @@ class busca(object):
 
         return "Caminho não encontrado"
 
-    def greedy(matriz, inicio, fim):
-        grafo, nos = convertAndSetMatrixToGraph(matriz)
-        h = gera_H(len(nos), nos, matriz)
+    def greedy(grafo,nos,h,inicio, fim):
         ind_f = nos.index(fim)
         l1 = lista()
         l2 = lista()
@@ -323,9 +323,8 @@ class busca(object):
 
         return "Caminho não encontrado"
 
-    def a_estrela(matriz, inicio, fim):
-        grafo, nos = convertAndSetMatrixToGraph(matriz)
-        h = gera_H(len(nos), nos, matriz)
+    def a_estrela(grafo,nos,h,inicio, fim):
+        # h = gera_H(len(nos), nos, matriz)
 
         ind_f = nos.index(fim)
         l1 = lista()
@@ -380,9 +379,8 @@ class busca(object):
 
         return "Caminho não encontrado"
 
-    def aia_estrela(matriz, inicio, fim):
-        grafo, nos = convertAndSetMatrixToGraph(matriz)
-        h = gera_H(len(nos), nos, matriz)
+    def aia_estrela(grafo,nos,h,inicio, fim):
+        # h = gera_H(len(nos), nos, matriz)
         pi = nos.index(inicio)
         pf = nos.index(fim)
         limite = h[pi][pf]
